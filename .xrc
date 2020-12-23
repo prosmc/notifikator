@@ -1,0 +1,293 @@
+#!/bin/sh
+#******************************************************************************
+# BSD 3-Clause License                                                        * 
+#                                                                             * 
+# Copyright (c) 2020, Markus Schneider                                        *
+# All rights reserved.                                                        * 
+#                                                                             *
+# Redistribution and use in source and binary forms, with or without          *
+# modification, are permitted provided that the following conditions are met: *
+#                                                                             *
+# 1. Redistributions of source code must retain the above copyright notice,   * 
+#    this list of conditions and the following disclaimer.                    *
+#                                                                             *
+# 2. Redistributions in binary form must reproduce the above copyright        * 
+#    notice, this list of conditions and the following disclaimer in the      *
+#    documentation and/or other materials provided with the distribution.     *
+#                                                                             *
+# 3. Neither the name of the copyright holder nor the names of its            *
+#   contributors may be used to endorse or promote products derived from      *
+#   this software without specific prior written permission.                  * 
+#                                                                             *
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" *
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE   *
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE  *
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE   *
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR         *
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF        *
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR             * 
+# BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,       * 
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR     *
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF      * 
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                                  *
+#******************************************************************************/
+CWD=$(pwd)
+
+#==============================================================================
+# SCRIPT:   .xrc
+# AUTOHR:   Markus Schneider (schneidermatic)
+# DATE:     2020-12-21
+# REV:      0.4.0
+# PLATFORM: noarch
+# PURPOSE:  Shell environment file for the x_ command space
+#==============================================================================
+
+##----------------------------------------
+## PYTHON SPECIFIC ENVs
+##----------------------------------------
+export PYTHONWARNINGS="ignore"
+
+##----------------------------------------
+## FLASK SPECIFIC ENVs
+##----------------------------------------
+export FLASK_APP=main.py
+export FLASK_APP_PORT=5005
+export FLASK_ENV=live
+
+export APP_NAME="notifikator"
+export APP_ID="nk01"
+export APP_IMAGE="schneidermatic/${APP_NAME}"
+export APP_DESCRIPTION="Notification service for Elasticsearch."
+export APP_RELEASE="0.1.0"
+export APP_IPADDRESS="0.0.0.0"
+export APP_PORT=5000
+export APP_CONFIG_NAME=testing
+export APP_ADMIN_USER=admin
+export APP_ADMIN_PASSWORD=password
+export APP_THREAD_NUMB=1
+export APP_SLEEP_TIME=1
+export APP_FLASK_LOGGER=False
+export APP_ES_SETUP_ARTIFACTS=True
+export APP_KB_SETUP_ARTIFACTS=True
+export APP_ES_BOOTSTRAP_RETRY_INTERVAL=1
+export APP_ES_BOOTSTRAP_RETRY_MAX=300
+export APP_KB_BOOTSTRAP_RETRY_INTERVAL=1
+export APP_KB_BOOTSTRAP_RETRY_MAX=300
+export APP_LOG_DIR="./"
+export APP_LOG_TYPE=stream
+export APP_LOG_LEVEL=DEBUG
+export APP_MAIN_LOG_NAME="app.log"
+export APP_WWW_LOG_NAME="www.log"
+export APP_LOG_MAX_BYTES=100_000_000
+export APP_LOG_COPIES=5
+export APP_ES_HOST="0.0.0.0"
+export APP_ES_PORT=9200
+export APP_ES_USER="elastic"
+export APP_ES_PASSWORD="changeme"
+export APP_ES_INDEX_01="incident"
+export APP_ES_INDEX_02="imticket"
+export APP_ES_USE_SSL=True
+export APP_ES_VERIFY_CERTS=False
+export APP_ES_CA_CERTS=$CWD/resources/ssl/elasticsearch.cer
+export APP_ES_TEMPLATE_FOLDER=$CWD/app/templates/elasticsearch
+export APP_KB_HOST="0.0.0.0"
+export APP_KB_PORT=5601
+export APP_KB_USER="elastic"
+export APP_KB_PASSWORD="changeme"
+export APP_KB_USE_SSL=True
+export APP_KB_VERIFY_CERTS=False
+export APP_KB_CA_CERTS=$CWD/resources/ssl/kibana.cer
+export APP_KB_TEMPLATE_FOLDER=$CWD/app/templates/kibana
+
+##----------------------------------------
+## BASIC PROJECT SETUP
+##----------------------------------------
+x_setup_project() { 
+    cd $CWD
+    python3 -m venv venv && \
+    . $CWD/venv/bin/activate && \
+    # pip install -e . 
+    python setup.py install
+}
+
+##----------------------------------------
+## ACTIVATE PYTHON'S VIRTUAL ENV
+##----------------------------------------
+x_activate() { . $CWD/venv/bin/activate; }
+
+##########################################
+##########################################
+#####   ---    APPLICATION    ---    #####
+##########################################
+##########################################
+
+##----------------------------------------
+## RUN APP
+##----------------------------------------
+x_run_dev() { 
+    cd $CWD/app
+    APP_CONFIG_NAME="testing" python -m flask run
+}
+
+x_run_prod() { 
+    APP_CONFIG_NAME="production" APP_FLASK_LOGGER=False gunicorn app.main:app -w1 --bind 0.0.0.0:8000 --log-level=info --capture-output
+}
+
+##----------------------------------------
+## REMOVE APP DOCKER CONTAINER/IMAGE
+##----------------------------------------
+x_rm_image() {
+  docker rm -f $(docker ps -aqf "name=${APP_NAME}")  > /dev/null 2>&1
+  docker rmi --force $(docker images -q "${APP_IMAGE}" | uniq) > /dev/null 2>&1
+}
+
+##----------------------------------------
+## REMOVE ALL PROJECT FILES
+##----------------------------------------
+x_rm_project() {
+   cd $CWD
+   find . -name "__pycache__" -type d -prune -exec rm -rf '{}' '+'
+   rm -rf build
+   rm -rf dist
+   rm -rf *.egg-info
+   deactivate
+   rm -rf $CWD/venv
+}
+
+##----------------------------------------
+## REMOVE ALL
+##----------------------------------------
+x_rm_all() {
+  x_rm_image
+  x_rm_project
+}
+
+##----------------------------------------
+## STOP APP_DEV DOCKER CONTAINER
+##----------------------------------------
+x_stop_dev_container() {
+  docker-compose -f notifikator.yml stop app_dev
+}
+
+##----------------------------------------
+## STOP APP_PROD DOCKER CONTAINER
+##----------------------------------------
+x_stop_prod_container() {
+  docker-compose -f notifikator.yml stop app_prod
+}
+
+##----------------------------------------
+## START APP_DEV DOCKER CONTAINER
+##----------------------------------------
+x_start_dev_container() {
+  x_stop_dev_container 
+  docker-compose -f notifikator.yml up app_dev
+}
+
+##----------------------------------------
+## START APP_PROD DOCKER CONTAINER
+##----------------------------------------
+x_start_prod_container() {
+  x_stop_prod_container
+  docker-compose -f notifikator.yml up app_prod
+}
+
+##----------------------------------------
+## START APP_DEV DOCKER CONTAINER
+##----------------------------------------
+x_new_dev_container() {
+  x_rm_image
+  x_start_dev_container
+}
+
+##----------------------------------------
+## START APP_PROD DOCKER CONTAINER
+##----------------------------------------
+x_new_prod_container() {
+  x_rm_image
+  x_start_prod_container
+}
+
+##----------------------------------------
+## SETUP ALL
+##----------------------------------------
+x_setup_prod_all() {
+  x_setup_project
+  x_start_prod_container
+}
+
+##----------------------------------------
+## SAVE IN A TARBALL
+##----------------------------------------
+x_save() {
+  docker save -o $CWD/resources/archive/notifikator.tar $APP_IMAGE
+}
+
+##########################################
+##########################################
+#### --- INTEGRATION ENVIRONMENT ---  ####
+##########################################
+##########################################
+
+x_down() {
+   docker-compose down -v
+}
+
+x_destroy() {
+   docker rmi --force $(docker images -q "${APP_IMAGE}" | uniq) > /dev/null 2>&1
+}
+
+x_setup_kl_stack() {
+   x_down
+   docker-compose -f create-certs.yml run --rm create_certs
+   docker-compose up es01 kb01 kl01
+}   
+
+x_setup_all() {
+   docker-compose -f create-certs.yml run --rm create_certs
+   docker-compose up 
+}
+
+##########################################
+##########################################
+#####   ---     API CALLS     ---    #####
+##########################################
+##########################################
+
+##----------------------------------------
+## API CALL FOR APP INFO
+##----------------------------------------
+x_api_get_info() {
+  curl -XGET http://localhost:${1}/api/v1/
+}
+
+##----------------------------------------
+## API CALL FOR ENGINE INFO
+##----------------------------------------
+x_api_get_engine() {
+  curl -XGET http://localhost:${1}/api/v1/engine
+}
+
+##----------------------------------------
+## API CALL FOR STOPPING THE ENGINE
+##----------------------------------------
+x_api_stop() {
+  curl -XDELETE http://localhost:${1}/api/v1/engine/$2
+}
+
+##----------------------------------------
+## API CALL FOR STARTING THE ENGINE
+##----------------------------------------
+x_api_start() {
+  curl -XPOST http://localhost:${1}/api/v1/engine
+}
+
+
+##########################################
+##########################################
+#####   ---   ALL COMMANDS    ---    #####
+##########################################
+##########################################
+x_cmd() {
+  declare -F | grep "x_" | sed -E 's/declare -f //'
+}

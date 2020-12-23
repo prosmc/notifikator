@@ -1,0 +1,8 @@
+{
+    "index_patterns": ["{{ name }}-*"],
+    "settings": {
+        "index.lifecycle.name": "{{ policy_name }}",
+        "index.lifecycle.rollover_alias": "{{ name }}",
+        "index.routing.allocation.require.data_node": "hot"
+    }
+}

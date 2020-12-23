@@ -1,6 +1,6 @@
 BSD 3-Clause License
 
-Copyright (c) 2020, SMC SCHNEIDERMATIC CONCEPTS
+Copyright (c) 2020, Markus Schneider
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

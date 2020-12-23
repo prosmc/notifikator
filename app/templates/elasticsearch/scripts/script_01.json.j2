@@ -1,0 +1,29 @@
+{
+  "script": {
+        "lang": "mustache",
+        "source": {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match": { 
+                                "incident.id": "0" 
+                            } 
+                        }
+                    ],
+                    "filter": [
+                        { 
+                            "range": {
+                                "@timestamp": {
+                                    "time_zone": "+02:00",
+                                    "gte": "now-60m",
+                                    "lte": "now"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

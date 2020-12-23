@@ -1,0 +1,6 @@
+include LICENSE.rst
+include README.rst
+graft app/api
+graft app/templates
+graft app/test
+global-exclude *.pyc

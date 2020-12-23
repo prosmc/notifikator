@@ -1,0 +1,24 @@
+{
+    "policy": {
+        "phases": {
+            "hot": {
+                "min_age": "7d",
+                "actions": {
+                    "rollover": {
+                        "max_age": "7d",
+                        "max_size": "10gb"
+                    },
+                    "set_priority": {
+                        "priority": 100
+                    }
+                }
+            },
+            "delete": {
+                "min_age": "2d",
+                "actions": {
+                    "delete": {}
+                }
+            }
+        }
+    }
+}
