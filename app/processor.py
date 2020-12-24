@@ -22,18 +22,23 @@ class Processor():
         self.index_02 = IndexName.format(self.config['APP_ES_INDEX_02'])
         self.timer = Timer()
 
-    def get_query_result(self):
-        template_handler = TemplateHandler(template_path="templates/elasticsearch/queries")
-        name = self.config["APP_ES_INDEX_01"]
-        template_param = name + ""
-        index = self.es_client.search_template(index=name, body=template_handler.get_data('aggs_query.json.j2', template_id=template_param))
-        index_correlation_keys = [ correlation_key['key'] for correlation_key in index['aggregations']['correlation_key']['buckets'] ]
-        return index_correlation_keys
+    def get_search_query_result(self):
+        with self.app.app_context():
+            app_id = self.app.config['APP_ID']
+            index_name = self.config['APP_ES_INDEX_01']
+            template_handler = TemplateHandler(template_path="templates/elasticsearch/queries")
+            template_id = app_id + "-" + index_name + "-" + "query"
+            response = self.es_client.search_template(index=index_name, body=template_handler.get_data('query_01.json.j2', template_id=template_id))
+            return response
         
     def notify(self):
         with self.app.app_context():
-            current_app.logger.debug(f"Notifikator is running ...")
-  
+            current_app.logger.info("Notifikator ist running ...")
+            documents = self.get_search_query_result()
+            for num, doc in enumerate(documents['hits']['hits']):
+                current_app.logger.debug(f"Document found - id: { doc['_id'] }")
+                #TODO: Implentation of the Workflow and Adapter Systeme.
+
     def run(self):
         self.timer.set_start_time()
         with self.app.app_context():
