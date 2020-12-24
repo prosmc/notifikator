@@ -122,7 +122,7 @@ class Bootstrap:
                 for config_key, config_val in self.app.config[relation_key].items():
                     data = template_handler.get_data(config_val)
                     current_app.logger.debug(data) 
-                    name = app_id + "-" + config_key + "-" + relation_val
+                    name = app_id + "-" + config_key + "-" + relation_val # nk01-incident-query
                     self.artifact.create_search_template(url_client, "post".upper(), name, data)
     
     def create_index_pattern(self):
