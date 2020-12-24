@@ -175,8 +175,8 @@ services:
       - APP_ES_VERIFY_CERTS=False
       - APP_ES_CA_CERTS=/notifikator/ssl/elasticsearch.cer
       - APP_ES_TEMPLATE_FOLDER=/notifikator/app/templates
-      - APP_ES_INDEX_02=incident
-      - APP_ES_INDEX_03=imticket
+      - APP_ES_INDEX_01=incident
+      - APP_ES_INDEX_02=imticket
       - APP_KB_HOST=kb01
       - APP_KB_PORT=5601
       - APP_KB_USER=elastic
