@@ -28,10 +28,10 @@
 # ``shelve``, ``marshal``, ``anydbm``, & ``bsddb``
 # (among others).
 
-*.html linguist-detectable=false
-*.css linguist-detectable=false
-*.sh linguist-detectable=false
-*.yml linguist-detectable=false
-*.txt linguist-detectable=false
-Dockerfile linguist-detectable=false
+*.html linguist-language=python
+*.css linguist-language=python
+*.sh linguist-language=python
+*.yml linguist-language=python
+*.txt linguist-language=python
+Dockerfile linguist-language=python
 
