@@ -108,7 +108,7 @@ class Artifact:
     def create_dashboard(self, client, data):
         with self.app.app_context():
             try:
-                REQUEST_URL=f"https://{self.app.config['APP_KB_HOST']}:{self.app.config['APP_KB_PORT']}/api/saved_objects/_import"
+                REQUEST_URL=f"https://{self.app.config['APP_KB_HOST']}:{self.app.config['APP_KB_PORT']}/api/saved_objects/_import?overwrite=true"
                 headers = {
                     'kbn-xsrf': 'true'
                 }
