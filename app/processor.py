@@ -9,6 +9,7 @@ from flask import current_app
 from .client import ClientFactory, ClientType
 from .utils import Timer, TimeStamp, IndexName
 from .template import TemplateHandler
+from .adapters.Elasticsearch import ElasticsearchAdapter
 
 class Processor():
 
@@ -33,11 +34,13 @@ class Processor():
         
     def notify(self):
         with self.app.app_context():
-            current_app.logger.info("Notifikator ist running ...")
             documents = self.get_search_query_result()
             for num, doc in enumerate(documents['hits']['hits']):
                 current_app.logger.debug(f"Document found - id: { doc['_id'] }")
-                #TODO: Implentation of the Workflow and Adapter Systeme.
+                #TODO: First simple Adapter implementation.
+                #      Next step: More generic approach based on an Adapter Handler!!!
+                elasticsearch_adapter = ElasticsearchAdapter("ElasticsearchAdapter", self.app)
+                elasticsearch_adapter.execute(json_data=doc)
 
     def run(self):
         self.timer.set_start_time()
