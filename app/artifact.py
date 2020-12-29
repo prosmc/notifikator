@@ -83,9 +83,9 @@ class Artifact:
                     verify=eval(self.app.config['APP_KB_VERIFY_CERTS'])
                 )
                 current_app.logger.info(resp)
-                current_app.logger.info(f"Kibana Korrelator index_pattern '{kwargs.get('name')}' successfully created.")
+                current_app.logger.info(f"Kibana index_pattern '{kwargs.get('name')}' successfully created.")
             except Exception as other:
-                current_app.logger.error(f"Kibana Korrelator index_pattern '{kwargs.get('name')}' creation exception occured: {other}")
+                current_app.logger.error(f"Kibana index_pattern '{kwargs.get('name')}' creation exception occured: {other}")
 
     def create_search_template(self, url_client, http_method, name, data ):
         with self.app.app_context():
@@ -122,6 +122,6 @@ class Artifact:
                     verify=eval(self.app.config['APP_KB_VERIFY_CERTS'])
                 )
                 current_app.logger.info(resp)
-                current_app.logger.info(f"Kibana Korrelator dashboard was successfully created.")
+                current_app.logger.info(f"Kibana dashboard was successfully created.")
             except Exception as other:
-                current_app.logger.error(f"Kibana Korrelator dashboard creation exception occured: {other}")
+                current_app.logger.error(f"Kibana dashboard creation exception occured: {other}")
