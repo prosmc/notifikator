@@ -3,7 +3,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     APP_NAME = os.environ.get("APP_NAME", "Notifikator")
-    APP_ID = os.environ.get("APP_ID", None)
+    APP_ID = os.environ.get("APP_ID", "nk01")
     APP_CONFIG_NAME = os.environ.get("APP_CONFIG_NAME", "testing")
     APP_DESCRIPTION = os.environ.get("APP_DESCRIPTION","Notifikator is an event notification service for Elasticsearch.")
     APP_RELEASE = os.environ.get("APP_RELEASE", None)
