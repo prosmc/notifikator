@@ -168,8 +168,8 @@ class Bootstrap:
             self.create_index_templates()
             self.create_indices()
             self.create_search_templates()
-            self.create_index_pattern()
-            #self.create_dashboards()
+            #self.create_index_pattern()
+            self.create_dashboards()
             self.startup_engine()
             self.set_startup_time()
 
