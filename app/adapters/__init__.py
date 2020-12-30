@@ -2,14 +2,15 @@
 
 class Adapter:
 
-    def __init__(self, name, app):
-        self.name = name
-        self.app  = app
-        self.index_01 = self.app.config['APP_ES_INDEX_01']
-        self.index_02 = self.app.config['APP_ES_INDEX_02']
+    def __init__(self, app, adapter):
+        self.app      = app
+        self.adapter  = adapter
 
-    def execute(self, json_data):
-        pass
-        
+    def send(self, json_data):
+        self.adapter.send(json_data)
+    
+    def request(self, json_data):
+        self.adapter.request(json_data)
+
     def __str__(self):
         return str(self.obj)

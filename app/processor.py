@@ -9,7 +9,8 @@ from flask import current_app
 from .client import ClientFactory, ClientType
 from .utils import Timer, TimeStamp, IndexName
 from .template import TemplateHandler
-from .adapters.Elasticsearch import ElasticsearchAdapter
+from .adapters import Adapter
+from .adapters.simulator import SimulatorAdapter
 
 class Processor():
 
@@ -32,22 +33,23 @@ class Processor():
             response = self.es_client.search_template(index=index_name, body=template_handler.get_data('query_01.json.j2', template_id=template_id))
             return response
         
-    def notify(self):
+    def execute(self):
         with self.app.app_context():
             documents = self.get_search_query_result()
             for num, doc in enumerate(documents['hits']['hits']):
                 current_app.logger.debug(f"Document found - id: { doc['_id'] }")
                 #TODO: First simple Adapter implementation.
                 #      Next step: More generic approach based on an Adapter Handler!!!
-                elasticsearch_adapter = ElasticsearchAdapter("ElasticsearchAdapter", self.app)
-                elasticsearch_adapter.execute(json_data=doc)
-
+                simulator_adapter = SimulatorAdapter(name="SimulatorAdapter", app=self.app)
+                adapter = Adapter(app=self.app, adapter=simulator_adapter)
+                adapter.send(json_data=doc)
+                
     def run(self):
         self.timer.set_start_time()
         with self.app.app_context():
             try:
                 self.es_client = ClientFactory.newInstance(ClientType.ELASTICSEARCH, self.app)
-                self.notify()
+                self.execute()
                 current_app.logger.info(f"Elapsed Time (sec.): { self.timer.get_run_time() }")
                 self.es_client.transport.close()
             except Exception as other:
