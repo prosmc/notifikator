@@ -4,7 +4,7 @@ from .legend import Legend
 from .utils import TimeStamp
 from flask import current_app
 from .engine import Engine
-from .processor import ProcessorUnitType
+from .processor import ProcessorType
 from .processor import Processor
 from .logger import Logger
 from .client import ClientType, ClientFactory
@@ -150,9 +150,9 @@ class Bootstrap:
 
     def startup_engine(self):
         with self.app.app_context():
-            processor = Processor(name=self.app.config['APP_NAME'] + "-Sender-Processor", app=self.app, unit_type=ProcessorUnitType.SENDER.value, config=self.app.config)
+            processor = Processor(name=self.app.config['APP_NAME'] + "-Publisher-Processor", app=self.app, type=ProcessorType.TYPE_01.value, config=self.app.config)
             if not Engine.get_thread_by_name(processor.name):
-                th = Engine(target=Engine, name=self.app.config['APP_ID'] + "-Sender-Engine", processor=processor, interval=int(self.app.config['APP_SLEEP_TIME']))
+                th = Engine(target=Engine, name=self.app.config['APP_ID'] + "-Publisher-Engine", processor=processor, interval=int(self.app.config['APP_SLEEP_TIME']))
                 th.start()
 
     def set_startup_time(self):
