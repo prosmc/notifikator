@@ -4,13 +4,17 @@ import sys
 import time
 import threading
 from datetime import datetime
+from enum import Enum
 from elasticsearch import Elasticsearch
 from flask import current_app
 from .client import ClientFactory, ClientType
 from .utils import Timer, TimeStamp, IndexName
 from .template import TemplateHandler
-from .adapters import Adapter
-from .adapters.simulator import SimulatorAdapter
+from .adapters.handler import AdapterHandler
+
+class ProcessorUnitType(Enum):
+    SENDER = 'sender'
+    REQUESTER = 'requester'
 
 class Processor():
 
@@ -18,10 +22,12 @@ class Processor():
         self.app = kwargs.get('app', None)
         self.app.logger.debug("Processor is initialized.")
         self.name = kwargs.get('name', None)
+        self.unit_type = kwargs.get('unit_type', None)
         self.config = kwargs.get('config', None)
         self.timestamp = TimeStamp.format()
         self.index_01 = IndexName.format(self.config['APP_ES_INDEX_01'])
         self.index_02 = IndexName.format(self.config['APP_ES_INDEX_02'])
+        self.adapter_handler = AdapterHandler(self.app)
         self.timer = Timer()
 
     def get_search_query_result(self):
@@ -38,11 +44,10 @@ class Processor():
             documents = self.get_search_query_result()
             for num, doc in enumerate(documents['hits']['hits']):
                 current_app.logger.debug(f"Document found - id: { doc['_id'] }")
-                #TODO: First simple Adapter implementation.
-                #      Next step: More generic approach based on an Adapter Handler!!!
-                simulator_adapter = SimulatorAdapter(name="SimulatorAdapter", app=self.app)
-                adapter = Adapter(app=self.app, adapter=simulator_adapter)
-                adapter.send(json_data=doc)
+                if (self.unit_type == ProcessorUnitType.SENDER.value):
+                    self.adapter_handler.run_sender_adapters(json_data=doc)
+                if (self.unit_type == ProcessorUnitType.REQUESTER.value):
+                    self.adapter_handler.run_requester_adapters(json_data=doc)
                 
     def run(self):
         self.timer.set_start_time()
