@@ -11,6 +11,7 @@ from .client import ClientFactory, ClientType
 from .utils import Timer, TimeStamp, IndexName
 from .template import TemplateHandler
 from .adapters.handler import AdapterHandler
+from .queries.query import QueryHandler
 
 class ProcessorType(Enum):
     TYPE_01 = 'publisher'
@@ -29,19 +30,30 @@ class Processor():
         self.index_02 = IndexName.format(self.config['APP_ES_INDEX_02'])
         self.adapter_handler = AdapterHandler(self.app)
         self.timer = Timer()
-
-    def get_search_query_result(self):
-        with self.app.app_context():
-            app_id = self.app.config['APP_ID']
-            index_name = self.config['APP_ES_INDEX_01']
-            template_handler = TemplateHandler(template_path="templates/elasticsearch/queries")
-            template_id = app_id + "-" + index_name + "-" + "query"
-            response = self.es_client.search_template(index=index_name, body=template_handler.get_data('query_01.json.j2', template_id=template_id))
-            return response
-        
+       
     def execute(self):
         with self.app.app_context():
-            documents = self.get_search_query_result()
+            app_id           = self.app.config['APP_ID']
+            client           = self.es_client
+            index_name       = self.config['APP_ES_INDEX_01']
+            template_path    = 'templates/elasticsearch/queries'
+            template_file    = 'query_01.json.j2'
+            template_handler = TemplateHandler(template_path=template_path)
+            template_id      = app_id + "-" + index_name + "-" + "query"
+            incident_id      = 0
+            query_handler    = QueryHandler(self.app)
+
+            documents = query_handler.get_search_query_result(
+                app_id=app_id,
+                client=client,
+                index_name=index_name,
+                template_path=template_path,
+                template_file=template_file,
+                template_handler=template_handler,
+                template_id=template_id,
+                incident_id=incident_id
+            )
+
             for num, doc in enumerate(documents['hits']['hits']):
                 current_app.logger.debug(f"Document found - id: { doc['_id'] }")
                 if (self.type == ProcessorType.TYPE_01.value):
