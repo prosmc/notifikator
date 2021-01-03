@@ -33,7 +33,8 @@ def create_app(*args, **kwargs):
         app.config['APP_ES_INDEX_02']: 'index_01.json.j2'
     }
     app.config['APP_INDEX_FILTER_QUERY'] = { 
-        app.config['APP_ES_INDEX_01']: 'script_01.json.j2'
+        app.config['APP_ES_INDEX_01']: 'script_01.json.j2',
+        app.config['APP_ES_INDEX_02']: 'script_01.json.j2'
     }
 
     # ENSURE THE INSTANCE FOLDER EXISTS!
