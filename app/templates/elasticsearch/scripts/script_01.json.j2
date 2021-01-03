@@ -7,7 +7,7 @@
                     "must": [
                         {
                             "match": { 
-                                "incident.id": "0" 
+                                "incident.id": {% raw %} "{{ incident_id }}" {% endraw %}
                             } 
                         }
                     ],
