@@ -32,7 +32,7 @@ class SimulatorAdapter():
         pass
 
     #TODO: Method must be implemented.
-    def request(self, json_data):
+    def subscribe(self, json_data):
         with self.app.app_context():
             pass
 

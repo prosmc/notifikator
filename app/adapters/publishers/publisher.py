@@ -6,8 +6,8 @@ class PublisherAdapter:
         self.app      = app
         self.adapter  = adapter
 
-    def send(self, json_data):
-        self.adapter.send(json_data)
+    def publish(self, json_data):
+        self.adapter.publish(json_data)
     
     def __str__(self):
         return str(self.obj)

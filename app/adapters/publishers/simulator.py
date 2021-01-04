@@ -47,7 +47,7 @@ class SimulatorAdapter():
                 body=source_to_update
             )
 
-    def send(self, json_data):
+    def publish(self, json_data):
         with self.app.app_context():
             self.create(self.filter(json_data))
             self.update(json_data)
