@@ -49,6 +49,7 @@ class SimulatorAdapter():
 
     def publish(self, json_data):
         with self.app.app_context():
+            current_app.logger.debug(f"Publisher Simulator Adatpter is running ...")
             self.create(self.filter(json_data))
             self.update(json_data)
 

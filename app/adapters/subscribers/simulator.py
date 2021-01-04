@@ -34,7 +34,7 @@ class SimulatorAdapter():
     #TODO: Method must be implemented.
     def subscribe(self, json_data):
         with self.app.app_context():
-            pass
+            current_app.logger.debug(f"Subscriber Simulator Adatpter is running ...")
 
     def __str__(self):
         return f"Sender Adapter Name: { self.name }"
