@@ -150,9 +150,13 @@ class Bootstrap:
 
     def startup_engine(self):
         with self.app.app_context():
-            processor = Processor(name=self.app.config['APP_NAME'] + "-Publisher-Processor", app=self.app, type=ProcessorType.TYPE_01.value, config=self.app.config)
-            if not Engine.get_thread_by_name(processor.name):
-                th = Engine(target=Engine, name=self.app.config['APP_ID'] + "-Publisher-Engine", processor=processor, interval=int(self.app.config['APP_SLEEP_TIME']))
+            publisher_processor = Processor(name=self.app.config['APP_NAME'] + "-Publisher-Processor", app=self.app, type=ProcessorType.TYPE_01.value, config=self.app.config)
+            subscriber_processor = Processor(name=self.app.config['APP_NAME'] + "-Subscriber-Processor", app=self.app, type=ProcessorType.TYPE_02.value, config=self.app.config)
+            if not Engine.get_thread_by_name(publisher_processor.name):
+                th = Engine(target=Engine, name=self.app.config['APP_ID'] + "-Publisher-Engine", processor=publisher_processor, interval=int(self.app.config['APP_SLEEP_TIME']))
+                th.start()
+            if not Engine.get_thread_by_name(subscriber_processor.name):
+                th = Engine(target=Engine, name=self.app.config['APP_ID'] + "-Subscriber-Engine", processor=subscriber_processor, interval=int(self.app.config['APP_SLEEP_TIME']))
                 th.start()
 
     def set_startup_time(self):

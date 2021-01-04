@@ -67,7 +67,7 @@ class Processor():
             try:
                 self.es_client = ClientFactory.newInstance(ClientType.ELASTICSEARCH, self.app)
                 self.execute()
-                current_app.logger.info(f"Elapsed Time (sec.): { self.timer.get_run_time() }")
+                current_app.logger.info(f"{ self.type.title() }-Processor Elapsed Time (sec.): { self.timer.get_run_time() }")
                 self.es_client.transport.close()
             except Exception as other:
                 current_app.logger.error(f"Processor run exception occured: {other}")
