@@ -237,7 +237,7 @@ x_destroy() {
    docker rmi --force $(docker images -q "${APP_IMAGE}" | uniq) > /dev/null 2>&1
 }
 
-x_setup_eps() {
+x_setup_rep_stack() {
    x_down
    docker-compose -f create-certs.yml run --rm create_certs
    docker-compose up es01 kb01 kl01
