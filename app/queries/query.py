@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from app.template import TemplateHandler
-
 class QueryHandler:
 
     def __init__(self, app):
