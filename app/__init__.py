@@ -32,9 +32,17 @@ def create_app(*args, **kwargs):
     app.config['APP_INDICES'] = { 
         app.config['APP_ES_INDEX_02']: 'index_01.json.j2'
     }
-    app.config['APP_INDEX_FILTER_QUERY'] = { 
-        app.config['APP_ES_INDEX_01']: 'script_01.json.j2',
-        app.config['APP_ES_INDEX_02']: 'script_01.json.j2'
+    app.config['APP_INDEX_QUERIES'] = { 
+        'query-01': {
+            'template_path': 'templates/elasticsearch',
+            'script_template_file': 'script-01.json.j2',
+            'query_template_file' : 'query-01.json.j2'
+        },
+        'query-02': {
+            'template_path': 'templates/elasticsearch',
+            'script_template_file': 'script-02.json.j2',
+            'query_template_file' : 'query-01.json.j2'
+        }
     }
 
     # ENSURE THE INSTANCE FOLDER EXISTS!
