@@ -114,17 +114,13 @@ class Bootstrap:
     def create_search_templates(self):
         with self.app.app_context():
             app_id = self.app.config['APP_ID']
-            relation = { 
-                "APP_INDEX_FILTER_QUERY": "query"
-            }
             url_client = ClientFactory.newInstance(ClientType.URLLIB3HTTPCONNECTION, self.app)
             template_handler = TemplateHandler(template_path="templates/elasticsearch/scripts")
-            for relation_key, relation_val in relation.items():
-                for config_key, config_val in self.app.config[relation_key].items():
-                    data = template_handler.get_data(config_val)
-                    current_app.logger.debug(data) 
-                    name = app_id + "-" + config_key + "-" + relation_val # nk01-incident-query
-                    self.artifact.create_search_template(url_client, "post".upper(), name, data)
+            for query_name, config_item in self.app.config['APP_INDEX_QUERIES'].items():
+                data = template_handler.get_data(config_item['script_template_file'])
+                current_app.logger.debug(data)
+                query_name = app_id + "-" + query_name# i.e. nk01-query-01
+                self.artifact.create_search_template(url_client, "post".upper(), query_name, data) 
     
     def create_index_pattern(self):
         with self.app.app_context():

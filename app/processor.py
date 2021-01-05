@@ -37,9 +37,9 @@ class Processor():
             client           = self.es_client
             index_name       = self.config['APP_ES_INDEX_01']
             template_path    = 'templates/elasticsearch/queries'
-            template_file    = 'query_01.json.j2'
+            template_file    = 'query-01.json.j2'
             template_handler = TemplateHandler(template_path=template_path)
-            template_id      = app_id + "-" + index_name + "-" + "query"
+            template_id      = app_id + "-" + "query-01"
             incident_id      = 0
             query_handler    = QueryHandler(self.app)
 
