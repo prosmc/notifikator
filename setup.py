@@ -9,7 +9,7 @@ base_dir = os.path.dirname(__file__)
 
 setup(
     name='Notifikator',
-    version='0.1.2',
+    version='0.1.3',
     description='Notifikator is a RESTful notification service for Elasticsearch.',
     author='Markus Schneider',
     author_email='markus.schneider73@gmail.com',
