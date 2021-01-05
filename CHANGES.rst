@@ -2,6 +2,19 @@
 Changes
 =========
 
+0.1.3 (2021-01-05)
+---------------------
+* Added - Params 'APP_PUBLISHER_SLEEP_TIME' and 'APP_SUBSCRIBER_SLEEP_TIME' were added to the following files ...
+* Added - Two different Pub/Sub Threads were defined.
+* Added - Log-Messages are added to the pub/sub adapters.
+* Fixed - Wrong release definition was fixed in '.env'.
+* Updated - Legend was renamed into 'REP-Stack'.
+* Updated - The name for the Dashboard was changed into '[REP-STACK]'.
+* Updated - Release '0.1.2' was defined in the following files.
+* Updated - Code beautifying.
+* Updated - Function 'send' was renamed into 'publish' and function 'request' was renamed into 'subscribe'.
+* Updated - Short hand function 'x_setup_eps' was renamed into 'x_setup_rep_stack'.
+
 0.1.2 (2021-01-03)
 ---------------------
 * Added   - Initial commit of the class 'SimulatorAdapter' of type subscriber.
