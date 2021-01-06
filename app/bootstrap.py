@@ -144,16 +144,50 @@ class Bootstrap:
             current_app.logger.info(data)
             self.artifact.create_dashboard(kb_client, data)
 
+    #def startup_engine(self):
+    #    with self.app.app_context():
+    #        publisher_processor = Processor(name=self.app.config['APP_NAME'] + "-Publisher-Processor", app=self.app, type=ProcessorType.TYPE_01.value, config=self.app.config)
+    #        subscriber_processor = Processor(name=self.app.config['APP_NAME'] + "-Subscriber-Processor", app=self.app, type=ProcessorType.TYPE_02.value, config=self.app.config)
+    #        if not Engine.get_thread_by_name(publisher_processor.name):
+    #            th = Engine(target=Engine, name=self.app.config['APP_ID'] + "-Publisher-Engine", processor=publisher_processor, interval=int(self.app.config['APP_PUBLISHER_SLEEP_TIME']))
+    #            th.start()
+    #        if not Engine.get_thread_by_name(subscriber_processor.name):
+    #            th = Engine(target=Engine, name=self.app.config['APP_ID'] + "-Subscriber-Engine", processor=subscriber_processor, interval=int(self.app.config['APP_SUBSCRIBER_SLEEP_TIME']))
+    #            th.start()
+
     def startup_engine(self):
         with self.app.app_context():
-            publisher_processor = Processor(name=self.app.config['APP_NAME'] + "-Publisher-Processor", app=self.app, type=ProcessorType.TYPE_01.value, config=self.app.config)
-            subscriber_processor = Processor(name=self.app.config['APP_NAME'] + "-Subscriber-Processor", app=self.app, type=ProcessorType.TYPE_02.value, config=self.app.config)
+
+            publisher_processor  = Processor(name=self.app.config['APP_NAME'] + "-Publisher-Processor", 
+                                            app=self.app, 
+                                            type=ProcessorType.TYPE_01.value, 
+                                            config=self.app.config,
+                                            index_name=self.app.config['APP_ES_INDEX_01'],
+                                            template_path=self.app.config['APP_INDEX_QUERIES']['query-01']['template_path'] + '/queries',
+                                            template_file=self.app.config['APP_INDEX_QUERIES']['query-01']['query_template_file'],
+                                            query_name=list(self.app.config['APP_INDEX_QUERIES'].keys())[0],
+                                            incident_id=0,
+                                            state=2)
+
             if not Engine.get_thread_by_name(publisher_processor.name):
                 th = Engine(target=Engine, name=self.app.config['APP_ID'] + "-Publisher-Engine", processor=publisher_processor, interval=int(self.app.config['APP_PUBLISHER_SLEEP_TIME']))
                 th.start()
+
+            subscriber_processor = Processor(name=self.app.config['APP_NAME'] + "-Subscriber-Processor", 
+                                            app=self.app, 
+                                            type=ProcessorType.TYPE_02.value, 
+                                            config=self.app.config,
+                                            index_name=self.app.config['APP_ES_INDEX_01'],
+                                            template_path=self.app.config['APP_INDEX_QUERIES']['query-02']['template_path'] + '/queries',
+                                            template_file=self.app.config['APP_INDEX_QUERIES']['query-02']['query_template_file'],
+                                            query_name=list(self.app.config['APP_INDEX_QUERIES'].keys())[1],
+                                            incident_id=0,
+                                            state=2)
+
             if not Engine.get_thread_by_name(subscriber_processor.name):
                 th = Engine(target=Engine, name=self.app.config['APP_ID'] + "-Subscriber-Engine", processor=subscriber_processor, interval=int(self.app.config['APP_SUBSCRIBER_SLEEP_TIME']))
                 th.start()
+
 
     def set_startup_time(self):
         self.app.config['APP_STARTUP_TIME']= self.timestamp

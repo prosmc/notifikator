@@ -11,6 +11,13 @@
                             } 
                         }
                     ],
+                    "must_not": [
+                        {
+                            "match": { 
+                                "state": {% raw %} "{{ state }}" {% endraw %}
+                            } 
+                        }
+                    ],
                     "filter": [
                         { 
                             "range": {
