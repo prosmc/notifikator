@@ -1,0 +1,34 @@
+{
+  "script": {
+        "lang": "mustache",
+        "source": {
+            "query": {
+                "bool": {
+                    "must_not": [
+                        {
+                            "match": { 
+                                "incident.id": {% raw %} "{{ incident_id }}" {% endraw %}
+                            } 
+                        },
+                        {
+                            "match": { 
+                                "state": {% raw %} "{{ state }}" {% endraw %}
+                            } 
+                        }
+                    ],
+                    "filter": [
+                        { 
+                            "range": {
+                                "@timestamp": {
+                                    "time_zone": "+02:00",
+                                    "gte": "now-60m",
+                                    "lte": "now"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
