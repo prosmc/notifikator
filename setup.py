@@ -9,8 +9,8 @@ base_dir = os.path.dirname(__file__)
 
 setup(
     name='Notifikator',
-    version='0.1.3',
-    description='Notifikator is a RESTful notification service for Elasticsearch.',
+    version='0.2.0',
+    description='Notifikator - RESTful notification service of the Rapid Event Processing Stack (REP-Stack).',
     author='Markus Schneider',
     author_email='markus.schneider73@gmail.com',
     setup_requires='setuptools',
