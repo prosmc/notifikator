@@ -6,7 +6,7 @@ from flask import current_app
 import json
 import uuid
 
-class SimulatorAdapter():
+class DemoAdapter():
 
     def __init__(self, app, name):
         self.app      = app

@@ -1,16 +1,16 @@
  # -*- coding: utf-8 -*-
 
 from .adapter import Adapter
-from .publishers.simulator import SimulatorAdapter as PubSimAdp
-from .synchronizers.simulator import SimulatorAdapter as SyncSimAdp
+from .publishers.demo import DemoAdapter as PubDemoAdp
+from .synchronizers.demo import DemoAdapter as SyncDemoAdp
 from flask import current_app
 from ..processor_type import ProcessorType
 class AdapterHandler():
 
     def __init__(self, app):
         self.app = app
-        self.pub_adapters= [PubSimAdp(self.app,"simulator")]
-        self.sync_adapters= [SyncSimAdp(self.app,"simulator")]
+        self.pub_adapters= [PubDemoAdp(self.app,"simulator")]
+        self.sync_adapters= [SyncDemoAdp(self.app,"simulator")]
 
     def activate(self, json_data, adapters):
         with self.app.app_context():
