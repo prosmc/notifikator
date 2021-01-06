@@ -7,11 +7,6 @@
                     "must_not": [
                         {
                             "match": { 
-                                "incident.id": {% raw %} "{{ incident_id }}" {% endraw %}
-                            } 
-                        },
-                        {
-                            "match": { 
                                 "state": {% raw %} "{{ state }}" {% endraw %}
                             } 
                         }
