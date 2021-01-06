@@ -41,7 +41,12 @@ def create_app(*args, **kwargs):
         'query-02': {
             'template_path': 'templates/elasticsearch',
             'script_template_file': 'script-02.json.j2',
-            'query_template_file' : 'query-01.json.j2'
+            'query_template_file' : 'query-02.json.j2'
+        },
+        'query-03': {
+            'template_path': 'templates/elasticsearch',
+            'script_template_file': 'script-03.json.j2',
+            'query_template_file' : 'query-03.json.j2'
         }
     }
 
