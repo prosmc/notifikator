@@ -41,6 +41,7 @@ class Processor():
             template_handler = TemplateHandler(template_path=template_path)
             template_id      = app_id + "-" + "query-01"
             incident_id      = 0
+            state            = 0
             query_handler    = QueryHandler(self.app)
 
             documents = query_handler.get_search_query_result(
@@ -51,7 +52,8 @@ class Processor():
                 template_file=template_file,
                 template_handler=template_handler,
                 template_id=template_id,
-                incident_id=incident_id
+                incident_id=incident_id,
+                state=state
             )
 
             for num, doc in enumerate(documents['hits']['hits']):
