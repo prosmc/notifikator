@@ -54,4 +54,4 @@ class SimulatorAdapter():
             self.update(json_data)
 
     def __str__(self):
-        return f"Sender Adapter Name: { self.name }"
+        return f"Publisher Adapter Name: { self.name }"
