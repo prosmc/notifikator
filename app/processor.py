@@ -12,10 +12,7 @@ from .utils import Timer, TimeStamp, IndexName
 from .template import TemplateHandler
 from .adapters.handler import AdapterHandler
 from .queries.query import QueryHandler
-
-class ProcessorType(Enum):
-    TYPE_01 = 'publisher'
-    TYPE_02 = 'subscriber'
+from .processor_type import ProcessorType
 
 class Processor():
 
@@ -38,7 +35,7 @@ class Processor():
         self.adapter_handler = AdapterHandler(self.app)
         self.query_handler = QueryHandler(self.app)
         self.timer = Timer()
-        self.app.logger.debug("Processor is initialized.")
+        self.app.logger.debug(f"{self.type.title()}-Processor is initialized.")
        
     def execute(self, **kwargs):
         with self.app.app_context():
@@ -54,12 +51,9 @@ class Processor():
             )
 
             for num, doc in enumerate(documents['hits']['hits']):
-                current_app.logger.debug(f"Document found - id: { doc['_id'] }")
-                if (self.type == ProcessorType.TYPE_01.value):
-                    self.adapter_handler.run_publisher_adapters(json_data=doc)
-                if (self.type == ProcessorType.TYPE_02.value):
-                    self.adapter_handler.run_subscriber_adapters(json_data=doc)
-                
+                current_app.logger.debug(f"{self.type.title()}-Processor found doc: { doc['_id'] }")
+                self.adapter_handler.run(processor_type=self.type, json_data=doc)
+
     def run(self):
         self.timer.set_start_time()
         with self.app.app_context():
