@@ -16,6 +16,11 @@ class QueryHandler:
             template_handler = TemplateHandler(template_path=template_path)
             template_id      = kwargs.get('template_id', None)
             incident_id      = kwargs.get('incident_id', None)
+            state            = kwargs.get('state', None)
 
-            response = client.search_template(index=index_name, body=template_handler.get_data(template_file, template_id=template_id, incident_id=incident_id))
+            response = client.search_template(index=index_name, 
+                                              body=template_handler.get_data(template_file, 
+                                                    template_id=template_id, 
+                                                    incident_id=incident_id, 
+                                                    state=state))
             return response
