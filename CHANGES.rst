@@ -2,6 +2,28 @@
 Changes
 =========
 
+0.2.0 (2021-01-06)
+---------------------
+* Added - Sync adapter functinality  was activated in 'handler.py'.
+* Added - Templates for 'query-03' were added which is important for the sync simulator adapter.
+* Added - Three new jinja templated files were initially added.
+* Added - The 'scripts-02.json.j2' template file was initially committed.
+* Added - The following files were added or modified due to code optimizations (refactoring).
+* Added - Integration of different types of processors which can be parameterized.
+* Added - 'state' parameter was added to the 'query-01.json.j2' template.
+* Added - The parameter 'state' was added to the 'get_search_query_result' method of 'query.py'.
+* Added - Parameter 'state' was added to the 'execute' method of 'processor.py'.
+* Fixed - The '__str__' method was changed in 'simulator.py' due to a wrong string definition.
+* Updated - Release '0.2.0' wad defined in the following three files '.xrc', '.env' and 'setup.py'.
+* Updated - The 'PubSimulatorAdapter' was renamed into 'PubDemoAdapter' and the 'SyncSimulatorAdapter' was renamed into 'SyncDemoAdapter'.
+* Updated - 'script-02.json.j2' was modified for working with the synchronizer processor.
+* Updated - 'app/bootstrap.py' was refactore for working with publisher and synchronizer processes.
+* Updated - 'Sync Simulator Adapter' was improved for the first working revision.
+* Updated - All 'subscriber' artifacts  were replaced by 'synchronizer' artifacts.
+* Updated - Due to a config improvement in 'app/__init__.py' the 'bootstrap.py' and 'processor.py' were modified.
+* Updated - Config definition in '__init__.py' was improved.
+* Updated - Some template files were renamed.
+
 0.1.3 (2021-01-05)
 ---------------------
 * Added - Params 'APP_PUBLISHER_SLEEP_TIME' and 'APP_SUBSCRIBER_SLEEP_TIME' were added to the following files ...
