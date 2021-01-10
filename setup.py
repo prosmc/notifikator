@@ -9,7 +9,7 @@ base_dir = os.path.dirname(__file__)
 
 setup(
     name='Notifikator',
-    version='0.2.0',
+    version='0.3.0',
     description='Notifikator - RESTful notification service of the Rapid Event Processing Stack (REP-Stack).',
     author='Markus Schneider',
     author_email='markus.schneider73@gmail.com',
