@@ -58,7 +58,7 @@ export APP_NAME="notifikator"
 export APP_ID="nk01"
 export APP_IMAGE="schneidermatic/${APP_NAME}"
 export APP_DESCRIPTION="Notification service for Elasticsearch."
-export APP_RELEASE="0.2.0"
+export APP_RELEASE="0.3.0"
 export APP_IPADDRESS="0.0.0.0"
 export APP_PORT=5000
 export APP_CONFIG_NAME=testing
@@ -101,8 +101,12 @@ export APP_KB_CA_CERTS=$CWD/resources/ssl/kibana.cer
 export APP_KB_TEMPLATE_FOLDER=$CWD/app/templates/kibana
 
 ##----------------------------------------
-## BASIC PROJECT SETUP
+## BASIC SETUP PROCEDURES
 ##----------------------------------------
+x_setup_system() {
+    $CWD/resources/system/setup.sh
+}
+
 x_setup_project() { 
     cd $CWD
     python3 -m venv venv && \
