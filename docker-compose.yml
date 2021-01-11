@@ -138,14 +138,14 @@ services:
       retries: 5
 
   nk01:
-    image: schneidermatic/${APP_NAME_02}:${APP_RELEASE_LATEST_02}
+    image: schneidermatic/${APP_NAME_02}:${APP_RELEASE_02}
     container_name: "notifikator"
     environment:
       - APP_NAME=${APP_NAME_02}
       - APP_ID=nk01
-      - APP_IMAGE=schneidermatic/${APP_NAME_02}:${APP_RELEASE_LATEST_02}
+      - APP_IMAGE=schneidermatic/${APP_NAME_02}:${APP_RELEASE_02}
       - APP_DESCRIPTION="Rule based event correlation service for Elasticsearch."
-      - APP_RELEASE=${APP_RELEASE_LATEST_02}
+      - APP_RELEASE=${APP_RELEASE_02}
       - APP_IPADDRESS=0.0.0.0
       - APP_PORT=8008
       - APP_CONFIG_NAME=production
