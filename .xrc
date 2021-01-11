@@ -57,8 +57,8 @@ export FLASK_ENV=live
 export APP_NAME="notifikator"
 export APP_ID="nk01"
 export APP_IMAGE="schneidermatic/${APP_NAME}"
-export APP_DESCRIPTION="Notification service for Elasticsearch."
-export APP_RELEASE="0.3.0"
+export APP_DESCRIPTION="Notifikator - RESTful notification service of the Rapid Event Processing Stack (REP-Stack)."
+export APP_RELEASE="0.3.1"
 export APP_IPADDRESS="0.0.0.0"
 export APP_PORT=5000
 export APP_CONFIG_NAME=testing
@@ -170,47 +170,47 @@ x_rm_all() {
 ##----------------------------------------
 ## STOP APP_DEV DOCKER CONTAINER
 ##----------------------------------------
-x_stop_dev_container() {
-  docker-compose -f notifikator.yml stop app_dev
+x_stop_dev_notifikator() {
+  docker-compose -f notifikator.yml stop notifikator_dev
 }
 
 ##----------------------------------------
 ## STOP APP_PROD DOCKER CONTAINER
 ##----------------------------------------
-x_stop_prod_container() {
-  docker-compose -f notifikator.yml stop app_prod
+x_stop_prod_notifikator() {
+  docker-compose -f notifikator.yml stop notifikator_prod
 }
 
 ##----------------------------------------
 ## START APP_DEV DOCKER CONTAINER
 ##----------------------------------------
-x_start_dev_container() {
-  x_stop_dev_container 
-  docker-compose -f notifikator.yml up app_dev
+x_start_dev_notifikator() {
+  x_stop_dev_notifikator 
+  docker-compose -f notifikator.yml up notifikator_dev
 }
 
 ##----------------------------------------
 ## START APP_PROD DOCKER CONTAINER
 ##----------------------------------------
-x_start_prod_container() {
-  x_stop_prod_container
-  docker-compose -f notifikator.yml up app_prod
+x_start_prod_notifikator() {
+  x_stop_prod_notifikator
+  docker-compose -f notifikator.yml up notifikator_prod
 }
 
 ##----------------------------------------
 ## START APP_DEV DOCKER CONTAINER
 ##----------------------------------------
-x_new_dev_container() {
+x_new_dev_notifikator() {
   x_rm_image
-  x_start_dev_container
+  x_start_dev_notifikator
 }
 
 ##----------------------------------------
 ## START APP_PROD DOCKER CONTAINER
 ##----------------------------------------
-x_new_prod_container() {
+x_new_prod_notifikator() {
   x_rm_image
-  x_start_prod_container
+  x_start_prod_notifikator
 }
 
 ##----------------------------------------
@@ -218,7 +218,7 @@ x_new_prod_container() {
 ##----------------------------------------
 x_setup_prod_all() {
   x_setup_project
-  x_start_prod_container
+  x_start_prod_notifikator
 }
 
 ##----------------------------------------
