@@ -1,16 +1,16 @@
 version: "3.7"
 services:
-  app_dev:
+  notifikator_dev:
     build:
       context: .
-    image: schneidermatic/${APP_NAME}:${APP_RELEASE}
+    image: schneidermatic/${APP_NAME_02}:${APP_RELEASE_LATEST_02}
     container_name: "notifikator"
     environment:
       - APP_NAME=${APP_NAME}
       - APP_ID=nk01
-      - APP_IMAGE=schneidermatic/${APP_NAME}:${APP_RELEASE}
+      - APP_IMAGE=schneidermatic/${APP_NAME_02}:${APP_RELEASE_LATEST_02}
       - APP_DESCRIPTION="Rule based event correlation service for Elasticsearch."
-      - APP_RELEASE=${APP_RELEASE}
+      - APP_RELEASE={APP_RELEASE_LATEST_02}
       - APP_IPADDRESS=0.0.0.0
       - APP_PORT=5005
       - APP_CONFIG_NAME=testing
@@ -59,17 +59,17 @@ services:
     networks:    
       - notifikator
       
-  app_prod:
+  notifikator_prod:
     build:
       context: .
-    image: schneidermatic/${APP_NAME}:${APP_RELEASE}
+    image: schneidermatic/${APP_NAME_02}:${APP_RELEASE_LATEST_02}
     container_name: "notifikator"
     environment:
-      - APP_NAME=${APP_NAME}
+      - APP_NAME=${APP_NAME_02}
       - APP_ID=nk01
-      - APP_IMAGE=schneidermatic/${APP_NAME}:${APP_RELEASE}
+      - APP_IMAGE=schneidermatic/${APP_NAME_02}:${APP_RELEASE_LATEST_02}
       - APP_DESCRIPTION="Rule based event correlation service for Elasticsearch."
-      - APP_RELEASE=${APP_RELEASE}
+      - APP_RELEASE=${APP_RELEASE_LATEST_02}
       - APP_IPADDRESS=0.0.0.0
       - APP_PORT=8008
       - APP_CONFIG_NAME=production
