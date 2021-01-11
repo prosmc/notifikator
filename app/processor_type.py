@@ -4,4 +4,4 @@ from enum import Enum
 
 class ProcessorType(Enum):
     TYPE_01 = 'publisher'
-    TYPE_02 = 'subscriber'
+    TYPE_02 = 'synchronizer'
